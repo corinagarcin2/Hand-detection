@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Hand Gesture Detection</title>
+
+    <!-- Connect our CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+    <main class="container">
+
+        <h1>Hand Gesture Detection</h1>
+
+        <p class="description">
+            Allow camera access and use your hand to interact
+            with the computer vision demo.
+        </p>
+
+
+        <!-- CAMERA AREA -->
+
+        <div class="camera-container">
+
+            <video
+                id="webcam"
+                autoplay
+                playsinline>
+            </video>
+
+            <canvas id="canvas"></canvas>
+
+        </div>
+
+
+        <!-- INFORMATION -->
+
+        <div class="info-panel">
+
+            <div>
+                <span>Hand</span>
+                <strong id="hand">None</strong>
+            </div>
+
+            <div>
+                <span>Fingers Up</span>
+                <strong id="fingers">0</strong>
+            </div>
+
+            <div>
+                <span>Gesture</span>
+                <strong id="gesture">None</strong>
+            </div>
+
+            <div>
+                <span>Confidence</span>
+                <strong id="confidence">0%</strong>
+            </div>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="controls">
+
+            <button id="startButton">
+                Start Camera
+            </button>
+
+            <button id="clearButton">
+                Clear Drawing
+            </button>
+
+        </div>
+
+
+        <p class="instructions">
+            ☝️ Point to draw &nbsp; • &nbsp;
+            ✋ Open hand to stop &nbsp; • &nbsp;
+            ✊ Fist to clear
+        </p>
+
+    </main>
+
+
+    <!-- Connect our JavaScript file -->
+
+    <script type="module" src="script.js"></script>
+
+</body>
+
+</html>
