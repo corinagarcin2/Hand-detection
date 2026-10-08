@@ -271,28 +271,52 @@ button:disabled {
     }
 }
 
-/* Back to Portfolio Button */
 
-.back-portfolio {
+/* UNIVERSAL BACK TO PORTFOLIO BUTTON */
+
+a.back-portfolio {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+
+  width: auto;
+  min-height: 44px;
   padding: 12px 20px;
   margin: 20px;
+
   background: #f9e5ee;
   color: #c83e83;
   border: 1px solid #f0c8db;
   border-radius: 30px;
-  font-family: inherit;
+
+  font-family: 'Manrope', Arial, sans-serif;
   font-size: 12px;
   font-weight: 800;
+  line-height: 1.4;
   letter-spacing: 1px;
+  text-transform: uppercase;
   text-decoration: none;
-  transition: all 0.25s ease;
+
+  box-shadow: none;
+  transform: none;
+  transition: background 0.25s ease,
+              color 0.25s ease,
+              transform 0.25s ease;
 }
 
-.back-portfolio:hover {
+a.back-portfolio:hover {
   background: #c83e83;
-  color: white;
+  color: #ffffff;
+  border-color: #c83e83;
   transform: translateY(-2px);
 }
+
+a.back-portfolio:visited {
+  color: #c83e83;
+}
+
+a.back-portfolio:visited:hover {
+  color: #ffffff;
+}
+
