@@ -269,5 +269,30 @@ button:disabled {
     button {
         width: 100%;
     }
+}
 
+/* Back to Portfolio Button */
+
+.back-portfolio {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  margin: 20px;
+  background: #f9e5ee;
+  color: #c83e83;
+  border: 1px solid #f0c8db;
+  border-radius: 30px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.back-portfolio:hover {
+  background: #c83e83;
+  color: white;
+  transform: translateY(-2px);
 }
