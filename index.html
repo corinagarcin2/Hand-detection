@@ -3,107 +3,222 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Hand Gesture Detection</title>
-
-    <!-- Connect our CSS file -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7efe9">
+    <meta name="description" content="An interactive hand gesture detection exhibit built with MediaPipe and JavaScript.">
+    <title>Hand Gesture Detection | Corina Garcin</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
-
 <body>
-    <a
-  href="https://corinagarcin2.github.io/Corina-Garcin---Portfolio/"
-  class="back-portfolio"
->
-  ← BACK TO PORTFOLIO
-</a>
+    <header class="site-header">
+        <a class="brand" href="#top" aria-label="Hand Gesture Detection, back to top">
+            <span class="brand-mark" aria-hidden="true">CG</span>
+            <span>CORINA GARCIN <span class="brand-divider">/</span> ENGINEERING</span>
+        </a>
+        <span class="header-note">A HANDS-ON COMPUTER VISION EXPERIMENT <span aria-hidden="true">✳</span></span>
+    </header>
 
-    <main class="container">
+    <main id="top">
+        <section class="hero" aria-labelledby="page-title">
+            <span class="hero-sparkle sparkle-one" aria-hidden="true">✳</span>
+            <span class="hero-sparkle sparkle-two" aria-hidden="true">✦</span>
+            <span class="hero-sparkle sparkle-three" aria-hidden="true">✳</span>
 
-        <h1>Hand Gesture Detection</h1>
+            <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> PROJECT 01 <span class="eyebrow-divider">/</span> COMPUTER VISION</p>
+            <h1 id="page-title">HAND GESTURE<br><span>DETECTION</span></h1>
+            <p class="hero-subtitle">An interactive computer vision experiment that turns hand movements into digital controls.</p>
+            <p class="hero-intro">Using real-time hand tracking, this project explores how gestures can become a new way to interact with technology.</p>
 
-        <p class="description">
-            Allow camera access and use your hand to interact
-            with the computer vision demo.
-        </p>
-
-
-        <!-- CAMERA AREA -->
-
-        <div class="camera-container">
-
-            <video
-                id="webcam"
-                autoplay
-                playsinline>
-            </video>
-
-            <canvas id="canvas"></canvas>
-
-        </div>
-
-
-        <!-- INFORMATION -->
-
-        <div class="info-panel">
-
-            <div>
-                <span>Hand</span>
-                <strong id="hand">None</strong>
+            <div class="hero-bottom">
+                <div class="tech-tags" aria-label="Technologies">
+                    <span>JAVASCRIPT</span>
+                    <span>MEDIAPIPE</span>
+                    <span>COMPUTER VISION</span>
+                </div>
+                <button class="start-button" id="startButton" type="button">START CAMERA <span aria-hidden="true">↗</span></button>
             </div>
+        </section>
 
-            <div>
-                <span>Fingers Up</span>
-                <strong id="fingers">0</strong>
+        <section class="exhibit" id="playground" aria-label="Interactive hand tracking exhibit">
+            <article class="camera-card">
+                <div class="camera-card-head">
+                    <div>
+                        <p class="card-kicker">THE INTERACTIVE EXHIBIT</p>
+                        <h2>Move. Make. Create.</h2>
+                    </div>
+                    <span class="exhibit-number" aria-hidden="true">01</span>
+                </div>
+
+                <div class="camera-frame">
+                    <div class="camera-frame-top">
+                        <span class="live-label"><span class="live-symbol" aria-hidden="true">✳</span> LIVE HAND TRACKING</span>
+                        <span class="camera-status" id="cameraStatus" data-state="off" role="status" aria-live="polite">
+                            <span class="status-dot" aria-hidden="true"></span>
+                            <span id="cameraStatusText">CAMERA OFF</span>
+                        </span>
+                    </div>
+                    <div class="camera-container">
+                        <video id="webcam" autoplay playsinline aria-label="Mirrored live webcam feed"></video>
+                        <canvas id="canvas" aria-hidden="true"></canvas>
+                        <div class="camera-placeholder" id="cameraPlaceholder">
+                            <span class="placeholder-hand" aria-hidden="true">✋</span>
+                            <strong>Your hands are the controller.</strong>
+                            <span>Start the camera to begin the experiment.</span>
+                        </div>
+                        <span class="frame-corner frame-corner-tl" aria-hidden="true"></span>
+                        <span class="frame-corner frame-corner-tr" aria-hidden="true"></span>
+                        <span class="frame-corner frame-corner-bl" aria-hidden="true"></span>
+                        <span class="frame-corner frame-corner-br" aria-hidden="true"></span>
+                    </div>
+                    <div class="camera-card-foot">
+                        <span><span class="camera-foot-mark" aria-hidden="true">↔</span> MIRRORED PREVIEW · UP TO 2 HANDS TRACKED</span>
+                        <button class="clear-button" id="clearButton" type="button"><span aria-hidden="true">↺</span> CLEAR DRAWING</button>
+                    </div>
+                </div>
+                <p class="camera-note"><span aria-hidden="true">✦</span> Camera access stays in your browser during this demo.</p>
+            </article>
+
+            <aside class="playground-card" aria-label="Gesture playground and tracking information">
+                <div class="playground-head">
+                    <div>
+                        <p class="card-kicker">MAKE A MOVE</p>
+                        <h2>Gesture playground</h2>
+                    </div>
+                    <span class="playground-star" aria-hidden="true">✳</span>
+                </div>
+
+                <div class="current-gesture" aria-live="polite">
+                    <span class="current-gesture-label">CURRENT GESTURE</span>
+                    <span class="current-gesture-emoji" id="gestureEmoji" aria-hidden="true">✦</span>
+                    <strong id="gesture">Waiting...</strong>
+                    <span class="gesture-caption" id="gestureCaption">Waiting for your hand...</span>
+                </div>
+
+                <div class="gesture-grid" aria-label="Supported gestures">
+                    <article class="gesture-tile" data-gesture="OPEN HAND" aria-current="false">
+                        <span class="tile-emoji" aria-hidden="true">✋</span>
+                        <span class="tile-copy"><strong>OPEN HAND</strong><span>Stop drawing</span></span>
+                        <span class="detected-label">DETECTED!</span>
+                    </article>
+                    <article class="gesture-tile" data-gesture="FIST" aria-current="false">
+                        <span class="tile-emoji" aria-hidden="true">✊</span>
+                        <span class="tile-copy"><strong>FIST</strong><span>Clear the drawing</span></span>
+                        <span class="detected-label">DETECTED!</span>
+                    </article>
+                    <article class="gesture-tile" data-gesture="PEACE" aria-current="false">
+                        <span class="tile-emoji" aria-hidden="true">✌️</span>
+                        <span class="tile-copy"><strong>PEACE</strong><span>Two fingers up</span></span>
+                        <span class="detected-label">DETECTED!</span>
+                    </article>
+                    <article class="gesture-tile" data-gesture="POINTING" aria-current="false">
+                        <span class="tile-emoji" aria-hidden="true">☝️</span>
+                        <span class="tile-copy"><strong>POINTING</strong><span>Draw with index finger</span></span>
+                        <span class="detected-label">DETECTED!</span>
+                    </article>
+                    <article class="gesture-tile" data-gesture="THUMBS UP" aria-current="false">
+                        <span class="tile-emoji" aria-hidden="true">👍</span>
+                        <span class="tile-copy"><strong>THUMBS UP</strong><span>Give it a thumbs-up</span></span>
+                        <span class="detected-label">DETECTED!</span>
+                    </article>
+                </div>
+
+                <div class="tracking-panel">
+                    <div class="tracking-heading">
+                        <h3>Live tracking</h3>
+                        <span>MEDIAPIPE</span>
+                    </div>
+                    <div class="tracking-grid">
+                        <div class="tracking-stat">
+                            <span>FINGERS UP</span>
+                            <strong id="fingers">0</strong>
+                        </div>
+                        <div class="tracking-stat">
+                            <span>HAND DETECTED</span>
+                            <strong id="hand">Waiting...</strong>
+                        </div>
+                        <div class="tracking-stat tracking-stat-wide">
+                            <span>CONFIDENCE</span>
+                            <strong id="confidence">0%</strong>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="drawing-section" aria-labelledby="drawing-title">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">A LITTLE BIT OF MAGIC</p>
+                    <h2 id="drawing-title">Draw with your hands <span aria-hidden="true">✦</span></h2>
+                    <p>Your index finger becomes the brush. No mouse required.</p>
+                </div>
+                <span class="drawing-doodle" aria-hidden="true">↗</span>
             </div>
-
-            <div>
-                <span>Gesture</span>
-                <strong id="gesture">None</strong>
+            <div class="drawing-instructions">
+                <article class="instruction-card instruction-pink">
+                    <span class="instruction-number">01</span>
+                    <span><strong>POINT</strong><span> your index finger to draw.</span></span>
+                    <span class="instruction-icon" aria-hidden="true">☝️</span>
+                </article>
+                <article class="instruction-card instruction-cream">
+                    <span class="instruction-number">02</span>
+                    <span><strong>OPEN</strong><span> your hand to stop drawing.</span></span>
+                    <span class="instruction-icon" aria-hidden="true">✋</span>
+                </article>
+                <article class="instruction-card instruction-lime">
+                    <span class="instruction-number">03</span>
+                    <span><strong>MAKE A FIST</strong><span> to clear the canvas.</span></span>
+                    <span class="instruction-icon" aria-hidden="true">✊</span>
+                </article>
             </div>
+            <p class="drawing-footnote"><span aria-hidden="true">✦</span> Your drawing appears right over the live camera feed in electric blue.</p>
+        </section>
 
-            <div>
-                <span>Confidence</span>
-                <strong id="confidence">0%</strong>
+        <section class="behind-section" aria-labelledby="behind-title">
+            <div class="section-heading behind-heading">
+                <div>
+                    <p class="section-kicker">NOT JUST A PRETTY INTERFACE</p>
+                    <h2 id="behind-title">Behind the build <span aria-hidden="true">✦</span></h2>
+                </div>
+                <p class="behind-intro">A little about the thinking and learning behind this experiment.</p>
             </div>
-
-        </div>
-
-
-        <!-- BUTTONS -->
-
-        <div class="controls">
-
-            <button id="startButton">
-                Start Camera
-            </button>
-
-            <button id="clearButton">
-                Clear Drawing
-            </button>
-
-        </div>
-
-
-        <p class="instructions">
-            ☝️ Point to draw &nbsp; • &nbsp;
-            ✋ Open hand to stop &nbsp; • &nbsp;
-            ✊ Fist to clear
-        </p>
-
+            <div class="build-grid">
+                <article class="build-card build-idea">
+                    <span class="build-number">01</span>
+                    <p class="build-label">THE IDEA</p>
+                    <p class="build-copy">I wanted to explore how computer vision could make everyday interactions more intuitive by turning simple hand movements into digital commands.</p>
+                    <span class="build-doodle" aria-hidden="true">✳</span>
+                </article>
+                <article class="build-card build-how">
+                    <span class="build-number">02</span>
+                    <p class="build-label">HOW IT WORKS</p>
+                    <p class="build-copy">MediaPipe identifies key points on the hand, while JavaScript interprets finger positions to recognize gestures and control interactive features.</p>
+                    <span class="build-doodle" aria-hidden="true">⌘</span>
+                </article>
+                <article class="build-card build-learned">
+                    <span class="build-number">03</span>
+                    <p class="build-label">WHAT I LEARNED</p>
+                    <p class="build-copy">Getting the webcam and hand tracking to work together was one of my biggest challenges. This project helped me better understand real-time computer vision, debugging, and designing interactive user experiences.</p>
+                    <span class="build-doodle" aria-hidden="true">↗</span>
+                </article>
+            </div>
+        </section>
     </main>
 
-
-    <!-- Connect our JavaScript file -->
+    <footer class="site-footer">
+        <p class="footer-mantra">Creating with purpose.<br>Learning with curiosity.<br><span>Building with passion. ✦</span></p>
+        <div class="footer-meta">
+            <span class="footer-caption">MADE TO MOVE YOU <span aria-hidden="true">✳</span></span>
+            <div class="footer-links">
+                <a class="footer-link" href="https://corinagarcin2.github.io/#projects">BACK TO PORTFOLIO <span aria-hidden="true">↗</span></a>
+                <a class="footer-link footer-link-source" href="https://github.com/corinagarcin2/Hand-detection">VIEW SOURCE CODE <span aria-hidden="true">↗</span></a>
+            </div>
+        </div>
+        <p class="footer-credit">CORINA GARCIN <span>·</span> ENGINEERING WITH PURPOSE</p>
+    </footer>
 
     <script type="module" src="script.js"></script>
-
 </body>
 
 </html>

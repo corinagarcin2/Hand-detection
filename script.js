@@ -24,6 +24,13 @@ const handText = document.getElementById("hand");
 const fingersText = document.getElementById("fingers");
 const gestureText = document.getElementById("gesture");
 const confidenceText = document.getElementById("confidence");
+const gestureEmoji = document.getElementById("gestureEmoji");
+const gestureCaption = document.getElementById("gestureCaption");
+const cameraStatus = document.getElementById("cameraStatus");
+const cameraStatusText = document.getElementById("cameraStatusText");
+const cameraCard = document.querySelector(".camera-card");
+const cameraContainer = document.querySelector(".camera-container");
+const gestureTiles = document.querySelectorAll(".gesture-tile");
 
 
 // ============================================================
@@ -37,6 +44,66 @@ let lastVideoTime = -1;
 let previousPoint = null;
 
 let drawingLines = [];
+
+const GESTURE_DETAILS = {
+    "OPEN HAND": {
+        emoji: "✋",
+        caption: "Drawing paused"
+    },
+    FIST: {
+        emoji: "✊",
+        caption: "Drawing cleared"
+    },
+    PEACE: {
+        emoji: "✌️",
+        caption: "Two fingers up"
+    },
+    POINTING: {
+        emoji: "☝️",
+        caption: "Drawing with your index finger"
+    },
+    "THUMBS UP": {
+        emoji: "👍",
+        caption: "Thumbs-up detected"
+    },
+    UNKNOWN: {
+        emoji: "✦",
+        caption: "Gesture not recognized"
+    }
+};
+
+
+function setCameraStatus(state, label) {
+
+    cameraStatus.dataset.state = state;
+
+    cameraStatusText.textContent = label;
+
+}
+
+
+function updateGestureDisplay(gesture) {
+
+    const details = gesture ? GESTURE_DETAILS[gesture] : null;
+
+    gestureText.textContent = gesture || "Waiting...";
+
+    gestureEmoji.textContent = details ? details.emoji : "✦";
+
+    gestureCaption.textContent = details
+        ? details.caption
+        : "Waiting for your hand...";
+
+    for (const tile of gestureTiles) {
+
+        tile.setAttribute(
+            "aria-current",
+            String(Boolean(gesture && tile.dataset.gesture === gesture))
+        );
+
+    }
+
+}
 
 
 // ============================================================
@@ -66,7 +133,9 @@ const HAND_CONNECTIONS = [
 
 async function createHandLandmarker() {
 
-    gestureText.textContent = "Loading...";
+    updateGestureDisplay(null);
+
+    gestureCaption.textContent = "Loading hand tracking...";
 
     const vision = await FilesetResolver.forVisionTasks(
 
@@ -105,7 +174,7 @@ async function createHandLandmarker() {
         );
 
 
-    gestureText.textContent = "Ready";
+    updateGestureDisplay(null);
 
     console.log("MediaPipe loaded!");
 
@@ -118,11 +187,17 @@ async function createHandLandmarker() {
 
 async function startCamera() {
 
+    setCameraStatus("loading", "LOADING");
+
+    startButton.textContent = "STARTING...";
+
+    startButton.disabled = true;
+
     try {
 
         if (!handLandmarker) {
 
-            gestureText.textContent = "Loading AI...";
+            gestureCaption.textContent = "Loading hand tracking...";
 
             await createHandLandmarker();
 
@@ -155,10 +230,18 @@ async function startCamera() {
 
         canvas.height = video.videoHeight;
 
+        if (video.videoWidth && video.videoHeight) {
 
-        startButton.textContent = "Camera Running";
+            cameraContainer.style.aspectRatio =
+                `${video.videoWidth} / ${video.videoHeight}`;
 
-        startButton.disabled = true;
+        }
+
+        cameraCard.classList.add("is-active");
+
+        setCameraStatus("active", "TRACKING ACTIVE");
+
+        startButton.textContent = "CAMERA RUNNING";
 
 
         predictWebcam();
@@ -169,7 +252,15 @@ async function startCamera() {
 
         console.error(error);
 
-        gestureText.textContent = "Error";
+        setCameraStatus("error", "CAMERA ERROR");
+
+        cameraCard.classList.remove("is-active");
+
+        startButton.textContent = "TRY AGAIN";
+
+        startButton.disabled = false;
+
+        gestureCaption.textContent = "Check camera permission and try again.";
 
         alert(
             "Could not start hand detection. Check camera permission and console."
@@ -627,8 +718,7 @@ function predictWebcam() {
                 fingerCount;
 
 
-            gestureText.textContent =
-                gesture;
+            updateGestureDisplay(gesture);
 
 
             confidenceText.textContent =
@@ -707,15 +797,14 @@ function predictWebcam() {
         else {
 
             handText.textContent =
-                "None";
+                "Waiting...";
 
 
             fingersText.textContent =
                 "0";
 
 
-            gestureText.textContent =
-                "None";
+            updateGestureDisplay(null);
 
 
             confidenceText.textContent =
